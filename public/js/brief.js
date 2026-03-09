@@ -1,4 +1,4 @@
-// Отримуємо id брифу з URL
+// ------------------ Підключення ------------------
 const params = new URLSearchParams(window.location.search)
 const briefId = params.get('id')
 
@@ -17,48 +17,52 @@ let originalHTML = '' // Для скасування змін
 
 // Мапа label → ключ MongoDB
 const labelToKey = {
-    "Замовник": "contactName",
-    "Телефон": "phone",
-    "Email": "contactEmail",
-    "Зв'язок": "contactMethod",
-    "Місія": "projectEssence",
-    "УТП": "usp",
-    "Цінності": "values",
-    "Ядро": "targetAudience1",
-    "Додаткові групи": "targetAudience2",
-    "Тип покупки": "purchaseType",
-    "Тип сайту": "siteType",
-    "Гео": "geo",
-    "Структура": "struct",
-    "Дизайн": "design",
-    "Бюджет": "budget",
-    "Терміни": "timeline",
-    "Рішення приймає": "decisionMaker",
-    "Додаткова інформація": "extraInfo",
-    "Інновації": "innovation",
-    "Посилання конкурентів": "competitorLinks",
-    "Аналіз конкурентів": "competitorAnalysis",
-    "Хостинг потрібен": "hostingNeeded",
-    "Домен потрібен": "domainNeeded",
-    "Подобається": "likes",
-    "Не подобається": "dislikes"
+	Замовник: 'contactName',
+	Телефон: 'phone',
+	Email: 'contactEmail',
+	"Зв'язок": 'contactMethod',
+	Місія: 'projectEssence',
+	УТП: 'usp',
+	Цінності: 'values',
+	Ядро: 'targetAudience1',
+	'Додаткові групи': 'targetAudience2',
+	'Тип покупки': 'purchaseType',
+	'Тип сайту': 'siteType',
+	Гео: 'geo',
+	Структура: 'struct',
+	Дизайн: 'design',
+	Бюджет: 'budget',
+	Терміни: 'timeline',
+	'Рішення приймає': 'decisionMaker',
+	'Додаткова інформація': 'extraInfo',
+	Інновації: 'innovation',
+	'Посилання конкурентів': 'competitorLinks',
+	'Аналіз конкурентів': 'competitorAnalysis',
+	'Хостинг потрібен': 'hostingNeeded',
+	'Домен потрібен': 'domainNeeded',
+	Подобається: 'likes',
+	'Не подобається': 'dislikes',
 }
 
 // ------------------ Функція завантаження брифу ------------------
 async function loadBrief() {
-    if (!briefId) return
+	if (!briefId) return
 
-    try {
-        const res = await fetch(`/api/briefs/${briefId}`, {
-            headers: { Authorization: 'Bearer ' + token }
-        })
-        const data = await res.json()
-        if (!res.ok) {
-            briefContainer.innerHTML = '<p>Бриф не знайдено.</p>'
-            return
-        }
+	try {
+		const res = await fetch(`/api/briefs/${briefId}`, {
+			headers: { Authorization: 'Bearer ' + token },
+		})
+		const data = await res.json()
+		if (!res.ok) {
+			briefContainer.innerHTML = '<p>Бриф не знайдено.</p>'
+			return
+		}
 
-        briefContainer.innerHTML = `
+		// Перевіряємо, щоб struct і design були масивами
+		if (!Array.isArray(data.struct)) data.struct = []
+		if (!Array.isArray(data.design)) data.design = []
+
+		briefContainer.innerHTML = `
             <div class="brief-content">
                 <div class="brief-header">
                     <h2 class="gradient-text">${data.projectName}</h2>
@@ -68,10 +72,10 @@ async function loadBrief() {
                 <div class="brief-grid">
                     <div class="brief-section">
                         <h3>01. Контакти</h3>
-                        <p><label>Замовник:</label> ${data.contactName}</p>
-                        <p><label>Телефон:</label> ${data.phone}</p>
+                        <p><label>Замовник:</label> ${data.contactName || '—'}</p>
+                        <p><label>Телефон:</label> ${data.phone || '—'}</p>
                         <p><label>Email:</label> ${data.contactEmail || '—'}</p>
-                        <p><label>Зв'язок:</label> ${data.contactMethod} (${data.contactTime || 'будь-коли'})</p>
+                        <p><label>Зв'язок:</label> ${data.contactMethod || '—'} (${data.contactTime || 'будь-коли'})</p>
                     </div>
 
                     <div class="brief-section">
@@ -92,8 +96,8 @@ async function loadBrief() {
                         <h3>04. Технічні деталі</h3>
                         <p><label>Тип сайту:</label> ${data.siteType || '—'}</p>
                         <p><label>Гео:</label> ${data.geo || '—'}</p>
-                        <p><label>Структура:</label> ${data.struct ? data.struct.join(', ') : 'Не вказано'}</p>
-                        <p><label>Дизайн:</label> ${data.design ? data.design.join(', ') : 'Не вказано'}</p>
+                        <p><label>Структура:</label> ${data.struct.join(', ') || 'Не вказано'}</p>
+                        <p><label>Дизайн:</label> ${data.design.join(', ') || 'Не вказано'}</p>
                     </div>
                 </div>
 
@@ -103,82 +107,92 @@ async function loadBrief() {
                 </div>
             </div>
         `
-    } catch (err) {
-        console.error(err)
-    }
+	} catch (err) {
+		console.error(err)
+	}
 }
 
 // ------------------ Логіка редагування ------------------
 function enableAdminControls() {
-    if (role !== 'admin' || !adminControls) return
-    adminControls.classList.remove('hidden')
+	if (role !== 'admin' || !adminControls) return
+	adminControls.classList.remove('hidden')
 
-    editBtn.addEventListener('click', () => {
-        originalHTML = briefContainer.innerHTML
+	editBtn?.addEventListener('click', () => {
+		originalHTML = briefContainer.innerHTML
 
-        const fields = briefContainer.querySelectorAll('.brief-section p')
-        fields.forEach(p => {
-            const label = p.querySelector('label')
-            const value = p.innerText.replace(label.innerText, '').trim()
-            const input = document.createElement('input')
-            input.type = 'text'
-            input.value = value === '—' ? '' : value
-            input.dataset.key = labelToKey[label.innerText.replace(':', '')] || ''
-            input.className = 'edit-input'
-            p.innerHTML = ''
-            p.appendChild(input)
-        })
+		const fields = briefContainer.querySelectorAll('.brief-section p')
+		fields.forEach(p => {
+			const label = p.querySelector('label')
+			if (!label) return
+			const value = p.innerText.replace(label.innerText, '').trim()
+			const input = document.createElement('input')
+			input.type = 'text'
+			input.value = value === '—' ? '' : value
+			input.dataset.key = labelToKey[label.innerText.replace(':', '')] || ''
+			input.className = 'edit-input'
+			p.innerHTML = ''
+			p.appendChild(input)
+		})
 
-        editBtn.classList.add('hidden')
-        saveBtn.classList.remove('hidden')
-        cancelBtn.classList.remove('hidden')
-    })
+		editBtn.classList.add('hidden')
+		saveBtn.classList.remove('hidden')
+		cancelBtn.classList.remove('hidden')
+	})
 
-    cancelBtn.addEventListener('click', () => {
-        briefContainer.innerHTML = originalHTML
-        editBtn.classList.remove('hidden')
-        saveBtn.classList.add('hidden')
-        cancelBtn.classList.add('hidden')
-    })
+	cancelBtn?.addEventListener('click', () => {
+		briefContainer.innerHTML = originalHTML
+		editBtn.classList.remove('hidden')
+		saveBtn.classList.add('hidden')
+		cancelBtn.classList.add('hidden')
+	})
 
-    saveBtn.addEventListener('click', async () => {
-        const inputs = briefContainer.querySelectorAll('.edit-input')
-        const updatedData = {}
-        inputs.forEach(input => {
-            if (input.dataset.key) {
-                updatedData[input.dataset.key] = input.value
-            }
-        })
+	saveBtn?.addEventListener('click', async () => {
+		const inputs = briefContainer.querySelectorAll('.edit-input')
+		const updatedData = {}
 
-        try {
-            const res = await fetch(`/api/briefs/${briefId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + token
-                },
-                body: JSON.stringify(updatedData)
-            })
+		inputs.forEach(input => {
+			const key = input.dataset.key
+			if (!key) return
 
-            if (res.ok) {
-                alert('Зміни збережено!')
-                loadBrief() // Перезавантажуємо бриф
-                editBtn.classList.remove('hidden')
-                saveBtn.classList.add('hidden')
-                cancelBtn.classList.add('hidden')
-            } else {
-                const err = await res.json()
-                alert('Помилка: ' + err.error)
-            }
-        } catch (err) {
-            console.error(err)
-            alert('Помилка мережі')
-        }
-    })
+			let value = input.value.trim()
+			if (value === '') value = null
+
+			if (key === 'struct' || key === 'design') {
+				updatedData[key] = value ? value.split(',').map(s => s.trim()) : []
+			} else {
+				updatedData[key] = value
+			}
+		})
+
+		try {
+			const res = await fetch(`/api/briefs/${briefId}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: 'Bearer ' + token,
+				},
+				body: JSON.stringify(updatedData),
+			})
+
+			if (res.ok) {
+				alert('Зміни збережено!')
+				await loadBrief() // Перезавантажуємо бриф
+				editBtn.classList.remove('hidden')
+				saveBtn.classList.add('hidden')
+				cancelBtn.classList.add('hidden')
+			} else {
+				const err = await res.json()
+				alert('Помилка: ' + err.error)
+			}
+		} catch (err) {
+			console.error(err)
+			alert('Помилка мережі')
+		}
+	})
 }
 
 // ------------------ Старт ------------------
 document.addEventListener('DOMContentLoaded', () => {
-    loadBrief()
-    enableAdminControls()
+	loadBrief()
+	enableAdminControls()
 })
