@@ -1,4 +1,3 @@
-// Отримуємо дані з localStorage, які завантажив brief.js
 const token = localStorage.getItem('token')
 const role = localStorage.getItem('role')
 const urlParams = new URLSearchParams(window.location.search)
@@ -13,89 +12,112 @@ const briefContainer = document.getElementById('brief')
 
 // 1. Ініціалізація кнопок (тільки для адміна)
 document.addEventListener('DOMContentLoaded', () => {
-	if (role === 'admin' && adminControls) {
-		adminControls.classList.remove('hidden')
-	}
+    if (role === 'admin' && adminControls) {
+        adminControls.classList.remove('hidden')
+    }
 })
+
+// 2. Мапа лейблів у ключі бази
+const labelToKey = {
+    'Замовник': 'contactName',
+    'Телефон': 'phone',
+    'Email': 'contactEmail',
+    "Зв'язок": 'contactMethod',
+    'Місія': 'projectEssence',
+    'УТП': 'usp',
+    'Цінності': 'values',
+    'Ядро': 'targetAudience1',
+    'Додаткові групи': 'targetAudience2',
+    'Тип покупки': 'purchaseType',
+    'Тип сайту': 'siteType',
+    'Гео': 'geo',
+    'Структура': 'struct',
+    'Дизайн': 'design',
+    'Бюджет': 'budget',
+    'Терміни': 'timeline'
+}
 
 let originalHTML = '' // Для скасування змін
 
-// 2. Логіка переходу в режим редагування
+// 3. Перехід в режим редагування
 editBtn?.addEventListener('click', () => {
-	originalHTML = briefContainer.innerHTML // Зберігаємо старий вигляд
+    originalHTML = briefContainer.innerHTML
 
-	// Знаходимо всі описові абзаци <p> всередині секцій брифу
-	const fields = briefContainer.querySelectorAll('.brief-section p')
+    const fields = briefContainer.querySelectorAll('.brief-section p')
 
-	fields.forEach(p => {
-		const currentText = p.innerText.trim()
-		const parent = p.parentElement
+    fields.forEach(p => {
+        const currentText = p.innerText.trim()
+        const parent = p.parentElement
 
-		// Визначаємо тип поля (input для коротких, textarea для довгих)
-		if (currentText.length > 60 || parent.classList.contains('full-width')) {
-			const textarea = document.createElement('textarea')
-			textarea.value = currentText === '—' ? '' : currentText // Прибираємо прочерк
-			textarea.className = 'edit-input' // Стиль для редагування
-			parent.replaceChild(textarea, p)
-		} else {
-			const input = document.createElement('input')
-			input.type = 'text'
-			input.value = currentText === '—' ? '' : currentText
-			input.className = 'edit-input'
-			parent.replaceChild(input, p)
-		}
-	})
+        const inputType = currentText.length > 60 || parent.classList.contains('full-width') ? 'textarea' : 'input'
+        const newInput = document.createElement(inputType)
+        newInput.className = 'edit-input'
 
-	// Перемикаємо кнопки
-	editBtn.classList.add('hidden')
-	saveBtn.classList.remove('hidden')
-	cancelBtn.classList.remove('hidden')
+        if (inputType === 'textarea') {
+            newInput.value = currentText === '—' ? '' : currentText
+        } else {
+            newInput.type = 'text'
+            newInput.value = currentText === '—' ? '' : currentText
+        }
+
+        parent.replaceChild(newInput, p)
+    })
+
+    editBtn.classList.add('hidden')
+    saveBtn.classList.remove('hidden')
+    cancelBtn.classList.remove('hidden')
 })
 
-// 3. Логіка скасування змін
+// 4. Скасування змін
 cancelBtn?.addEventListener('click', () => {
-	briefContainer.innerHTML = originalHTML // Повертаємо старий HTML
-
-	// Перемикаємо кнопки назад
-	editBtn.classList.remove('hidden')
-	saveBtn.classList.add('hidden')
-	cancelBtn.classList.add('hidden')
+    briefContainer.innerHTML = originalHTML
+    editBtn.classList.remove('hidden')
+    saveBtn.classList.add('hidden')
+    cancelBtn.classList.add('hidden')
 })
 
-// 4. Логіка збереження
+// 5. Збереження змін
 saveBtn?.addEventListener('click', async () => {
-	// Збираємо дані з усіх інпутів
-	const inputs = briefContainer.querySelectorAll('.edit-input')
-	const updatedData = {}
+    const inputs = briefContainer.querySelectorAll('.edit-input')
+    const updatedData = {}
 
-	inputs.forEach(input => {
-		// Знаходимо назву поля з сусіднього <label>
-		const label = input.parentElement.querySelector('label')
-		if (label) {
-			// Перетворюємо текст лейбла на ключ для бази (напр. "Суть проекту" -> "projectEssence")
-			const key = label.innerText.replace(':', '').trim()
-			updatedData[key] = input.value
-		}
-	})
+    inputs.forEach(input => {
+        const label = input.parentElement.querySelector('label')
+        if (!label) return
 
-	try {
-		const res = await fetch(`/api/briefs/${id}`, {
-			method: 'PUT', // Використовуємо існуючий PUT роут
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: 'Bearer ' + token,
-			},
-			body: JSON.stringify(updatedData),
-		})
+        const key = labelToKey[label.innerText.replace(':', '').trim()]
+        if (!key) return
 
-		if (res.ok) {
-			alert('Зміни успішно збережено!')
-			location.reload() // Перезавантажуємо сторінку для перегляду
-		} else {
-			const err = await res.json()
-			alert('Помилка збереження: ' + err.error)
-		}
-	} catch (err) {
-		console.error('Помилка мережі:', err)
-	}
+        let value = input.value.trim()
+        if (value === '') value = null // пусті поля не зберігаємо як "—"
+
+        // Масиви
+        if (key === 'struct' || key === 'design') {
+            updatedData[key] = value ? value.split(',').map(s => s.trim()) : []
+        } else {
+            updatedData[key] = value
+        }
+    })
+
+    try {
+        const res = await fetch(`/api/briefs/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+            body: JSON.stringify(updatedData)
+        })
+
+        if (res.ok) {
+            alert('Зміни успішно збережено!')
+            location.reload()
+        } else {
+            const err = await res.json()
+            alert('Помилка збереження: ' + err.error)
+        }
+    } catch (err) {
+        console.error('Помилка мережі:', err)
+        alert('Помилка мережі при оновленні брифу')
+    }
 })
