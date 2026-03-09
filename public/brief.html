@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перегляд брифу | IceBrief</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+<header class="glass-header">
+    <div class="logo"><span>Ice</span>Brief</div>
+    <div class="header-actions">
+        <div id="admin-controls" class="hidden" style="display: flex; gap: 10px;">
+            <button id="edit-btn" class="btn-glass"><i class="fas fa-edit"></i> Редагувати</button>
+            <button id="save-btn" class="btn-gradient hidden"><i class="fas fa-save"></i> Зберегти</button>
+            <button id="cancel-btn" class="btn-outline hidden"><i class="fas fa-times"></i> Скасувати</button>
+        </div>
+        <a href="/admin.html" class="btn-glass">До списку</a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="card brief-view-card" id="brief">
+        </div>
+</div>
+
+<script src="/js/brief.js"></script>
+<script src="/js/edit-brief.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IceBrief — Створення Брифу</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="glass-header">
+    <div class="logo"><span>Ice</span>Brief</div>
+    <a href="/index.html" class="btn-glass">На головну</a>
+</header>
+
+<div class="container main-layout">
+    <div class="card brief-form-card">
+        <header class="brief-intro">
+            <h1 class="gradient-text">Бриф на розробку IT-продукту</h1>
+            <p>Ваші відповіді допоможуть нам розрахувати точну вартість та створити продукт, що реально покращить ваш бізнес.</p>
+            <div class="info-badge">
+                <span>🛡️ Повна конфіденційність</span>
+                <span>📋 Бриф — не ТЗ, а фундамент ідеї</span>
+            </div>
+        </header>
+
+        <form id="briefForm">
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-num">01</span>
+                    <h2>Зв'язок з Вами</h2>
+                </div>
+                <div class="grid-inputs">
+                    <input name="contactName" placeholder="Як ми можемо до Вас звертатися? *" required>
+                    <input name="phone" placeholder="Номер телефону *" required>
+                    <input type="email" name="contactEmail" placeholder="E-mail для офіційних запитів">
+                </div>
+                <div class="grid-inputs" style="margin-top: 10px;">
+                    <select name="contactMethod">
+                        <option value="">Зручний месенджер</option>
+                        <option>Telegram</option>
+                        <option>Viber</option>
+                        <option>WhatsApp</option>
+                        <option>Skype</option>
+                    </select>
+                    <input name="contactTime" placeholder="Зручний період для спілкування (напр. 10:00 - 18:00)">
+                </div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-num">02</span>
+                    <h2>Загальні відомості</h2>
+                </div>
+                <input name="projectName" placeholder="Назва проекту (існуюча або майбутня) *" required>
+                <textarea name="projectEssence" placeholder="Суть бренду (основна ідея чи місія Вашого продукту)"></textarea>
+                <textarea name="usp" placeholder="Унікальна торгова пропозиція (УТП). Чому клієнт обере саме Вас?"></textarea>
+                
+                <div class="form-group-box">
+                    <label class="field-label">Цінності продукту</label>
+                    <textarea name="values" placeholder="Назвіть 3 основні цінності (раціональні чи емоційні)"></textarea>
+                    <textarea name="valueBenefit" placeholder="Яку вигоду споживачеві дає кожна з цінностей?"></textarea>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-num">03</span>
+                    <h2>Цільова аудиторія</h2>
+                </div>
+                <p class="section-hint">Опишіть Вашого споживача як живу людину (стать, вік, дохід, звички).</p>
+                
+                <div class="tabs-mock">
+                    <textarea name="targetAudience1" placeholder="Ядро аудиторії (основна група, % від загалу)"></textarea>
+                    <textarea name="targetAudience2" placeholder="Друга та третя групи споживачів"></textarea>
+                </div>
+
+                <label class="field-label">Тип покупки для клієнта</label>
+                <div class="options-grid">
+                    <label class="chip"><input type="radio" name="purchaseType" value="Simple"> <span>Проста (імпульсивна)</span></label>
+                    <label class="chip"><input type="radio" name="purchaseType" value="Hard"> <span>Складна (довгий вибір)</span></label>
+                </div>
+
+                <label class="field-label">Статус інноваційності</label>
+                <div class="options-stack">
+                    <label class="radio-box">
+                        <input type="radio" name="innovation" value="new">
+                        <div class="radio-content"><strong>Інноваційний</strong><span>Потрібно привчати ринок</span></div>
+                    </label>
+                    <label class="radio-box">
+                        <input type="radio" name="innovation" value="improved">
+                        <div class="radio-content"><strong>Покращений аналог</strong><span>Краще за конкурентів</span></div>
+                    </label>
+                    <label class="radio-box">
+                        <input type="radio" name="innovation" value="classic">
+                        <div class="radio-content"><strong>Стандартний</strong><span>Продукт не відрізняється від ринку</span></div>
+                    </label>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-num">04</span>
+                    <h2>Масштаб та оточення</h2>
+                </div>
+                <textarea name="competitorLinks" placeholder="Посилання на 3-5 сайтів конкурентів"></textarea>
+                <textarea name="competitorAnalysis" placeholder="Сильні та слабкі сторони ключових конкурентів"></textarea>
+                
+                <label class="field-label">Географія проекту</label>
+                <div class="options-grid">
+                    <label class="chip"><input type="radio" name="geo" value="Int"> <span>Міжнародний</span></label>
+                    <label class="chip"><input type="radio" name="geo" value="Fed"> <span>Національний</span></label>
+                    <label class="chip"><input type="radio" name="geo" value="Reg"> <span>Регіональний</span></label>
+                    <label class="chip"><input type="radio" name="geo" value="Local"> <span>Місцевий</span></label>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-num">05</span>
+                    <h2>Технічні параметри</h2>
+                </div>
+                
+                <label class="field-label">Тип сайту</label>
+                <div class="options-grid">
+                    <label class="chip"><input type="radio" name="siteType" value="LP"> <span>Landing Page</span></label>
+                    <label class="chip"><input type="radio" name="siteType" value="Viz"> <span>Сайт-візитка</span></label>
+                    <label class="chip"><input type="radio" name="siteType" value="Corp"> <span>Корпоративний</span></label>
+                    <label class="chip"><input type="radio" name="siteType" value="Shop"> <span>Інтернет-магазин</span></label>
+                    <label class="chip"><input type="radio" name="siteType" value="Portal"> <span>Портал</span></label>
+                </div>
+
+                <div class="grid-inputs">
+                    <select name="hostingNeeded">
+                        <option value="">Чи потрібен хостинг?</option>
+                        <option>Так</option>
+                        <option>Ні</option>
+                    </select>
+                    <select name="domainNeeded">
+                        <option value="">Чи потрібен домен?</option>
+                        <option>Так</option>
+                        <option>Ні</option>
+                    </select>
+                </div>
+
+                <label class="field-label">Необхідна структура</label>
+                <div class="options-grid">
+                    <label class="chip"><input type="checkbox" name="struct[]" value="Main"> <span>Головна</span></label>
+                    <label class="chip"><input type="checkbox" name="struct[]" value="About"> <span>Про нас</span></label>
+                    <label class="chip"><input type="checkbox" name="struct[]" value="Services"> <span>Послуги</span></label>
+                    <label class="chip"><input type="checkbox" name="struct[]" value="Catalog"> <span>Каталог</span></label>
+                    <label class="chip"><input type="checkbox" name="struct[]" value="News"> <span>Новини</span></label>
+                    <label class="chip"><input type="checkbox" name="struct[]" value="Contacts"> <span>Контакти</span></label>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-num">06</span>
+                    <h2>Стилістика та Дизайн</h2>
+                </div>
+                <label class="field-label">Бажаний образ</label>
+                <div class="options-grid">
+                    <label class="chip"><input type="checkbox" name="design[]" value="Min"> <span>Мінімалізм</span></label>
+                    <label class="chip"><input type="checkbox" name="design[]" value="Lux"> <span>Солідний</span></label>
+                    <label class="chip"><input type="checkbox" name="design[]" value="Euro"> <span>Європейський</span></label>
+                    <label class="chip"><input type="checkbox" name="design[]" value="Creat"> <span>Креативний</span></label>
+                    <label class="chip"><input type="checkbox" name="design[]" value="Strict"> <span>Суворий</span></label>
+                </div>
+
+                <textarea name="likes" placeholder="Приклади сайтів, які подобаються (посилання + що саме)"></textarea>
+                <textarea name="dislikes" placeholder="Сайти, які НЕ подобаються (і чому)"></textarea>
+            </section>
+
+            <section class="form-section">
+                <div class="section-header">
+                    <span class="step-num">07</span>
+                    <h2>Фінал та Бюджет</h2>
+                </div>
+                <div class="grid-inputs">
+                    <input name="budget" placeholder="Очікуваний бюджет ($ від - до)">
+                    <input name="timeline" placeholder="Бажані терміни здачі">
+                </div>
+                <textarea name="decisionMaker" placeholder="Хто у Вас приймає рішення? (ПІБ, контакти)"></textarea>
+                <textarea name="extraInfo" placeholder="Будь-які додаткові коментарі чи запитання"></textarea>
+            </section>
+
+            <button type="submit" class="btn-gradient">Сформувати та надіслати бриф</button>
+        </form>
+    </div>
+</div>
+
+<script src="/js/create.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Brief Manager</title>
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+
+<div class="bg-glow"></div>
+
+<header class="glass-header">
+    <div class="logo">
+        <i class="fas fa-project-diagram"></i>
+        <h1>Brief<span>Flow</span></h1>
+    </div>
+
+    <nav id="auth-nav">
+        <div id="user-wrapper">
+            <span id="user-info" class="hidden"></span>
+            <button id="logout-btn" class="btn-outline hidden"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+        <a href="/login.html" class="btn-glass" id="login-link">Увійти</a>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="hero">
+    <div class="hero-content">
+        <h2>Ваші ідеї заслуговують на <br><span class="gradient-text">ідеальну структуру</span></h2>
+        <p>Керуйте технічними завданнями, брифуйте клієнтів та тримайте всі дедлайни під контролем в одному місці.</p>
+        
+        <div class="hero-features" style="display: flex; justify-content: center; gap: 30px; margin: 30px 0; color: var(--text-dim); font-size: 0.9rem;">
+            <span><i class="fas fa-check-circle" style="color: var(--ice);"></i> Швидке створення</span>
+            <span><i class="fas fa-shield-alt" style="color: var(--ice);"></i> Надійне збереження</span>
+            <span><i class="fas fa-users" style="color: var(--ice);"></i> Зручно для клієнтів</span>
+        </div>
+
+        <div class="hero-actions">
+            <a class="btn-main" href="/create.html">
+                <i class="fas fa-plus"></i> Створити новий бриф
+            </a>
+        </div>
+    </div>
+</section>
+
+    <section class="briefs-section">
+        <div class="section-header">
+            <div class="line"></div>
+        </div>
+        <div id="brief-list" class="grid-layout"></div>
+    </section>
+</main>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
