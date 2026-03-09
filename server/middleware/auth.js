@@ -1,18 +1,13 @@
-const jwt = require('jsonwebtoken')
-const SECRET = 'your_jwt_secret_key'
+import jwt from 'jsonwebtoken'
+const SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key'
 
-module.exports = role => (req, res, next) => {
+export default function auth(req, role) {
 	const token = req.headers['authorization']?.split(' ')[1]
-	if (!token) return res.status(401).json({ error: 'Немає токена' })
+	if (!token) throw { status: 401, error: 'Немає токена' }
 
-	try {
-		const decoded = jwt.verify(token, SECRET)
-		if (role && decoded.role !== role) {
-			return res.status(403).json({ error: 'Недостатньо прав' })
-		}
-		req.user = decoded
-		next()
-	} catch (e) {
-		res.status(401).json({ error: 'Невалідний токен' })
-	}
+	const decoded = jwt.verify(token, SECRET)
+	if (role && decoded.role !== role)
+		throw { status: 403, error: 'Недостатньо прав' }
+
+	return decoded
 }
