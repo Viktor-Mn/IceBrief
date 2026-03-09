@@ -12,7 +12,6 @@ if (user && user.email) {
 	document.getElementById('login-link')?.classList.add('hidden')
 	document.getElementById('register-link')?.classList.add('hidden')
 
-	// Кнопка адмінки
 	if (role === 'admin' && !document.getElementById('admin-btn')) {
 		const adminBtn = document.createElement('a')
 		adminBtn.href = '/admin.html'

@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
 	try {
 		if (method === 'POST') {
-			const user = auth(req) // токен з заголовку
+			const user = auth(req)
 			const newBrief = {
 				...req.body,
 				userId: user.id,
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 		}
 
 		if (method === 'GET') {
-			const user = auth(req, 'admin') // тільки адмін може GET всіх
+			const user = auth(req, 'admin')
 			const briefs = await db
 				.collection('briefs')
 				.find()

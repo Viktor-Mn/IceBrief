@@ -13,7 +13,6 @@ if (form) {
         const formData = new FormData(form);
         const data = {};
 
-        // Правильна обробка масивів (чекбоксів) та звичайних полів
         formData.forEach((value, key) => {
             if (key.includes('[]')) {
                 const cleanKey = key.replace('[]', '');
@@ -24,7 +23,6 @@ if (form) {
             }
         });
 
-        // Додаємо статус за замовчуванням
         data.status = 'new';
 
         try {

@@ -23,7 +23,6 @@ if (regForm) {
 	})
 }
 
-// Функція для входу
 const loginForm = document.getElementById('loginForm')
 
 if (loginForm) {

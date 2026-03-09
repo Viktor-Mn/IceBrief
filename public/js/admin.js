@@ -1,10 +1,9 @@
-// 1. Оголошуємо змінні НА ПОЧАТКУ файлу
+
 const role = localStorage.getItem('role')
 const userRaw = localStorage.getItem('user')
 const user = userRaw ? JSON.parse(userRaw) : null
 let briefs = []
 
-// 2. Функція завантаження
 async function loadAdminBriefs() {
 	const token = localStorage.getItem('token')
 	try {
@@ -27,7 +26,6 @@ async function loadAdminBriefs() {
 	}
 }
 
-// 3. Функція рендеру таблиці
 function renderAdmin(data) {
 	const tbody = document.getElementById('admin-list')
 	if (!tbody) return
@@ -55,7 +53,6 @@ function renderAdmin(data) {
 		tbody.appendChild(tr)
 	})
 
-	// Обробка видалення
 	document.querySelectorAll('.delete-btn').forEach(btn => {
 		btn.onclick = async () => {
 			if (!confirm('Видалити цей бриф?')) return
@@ -69,7 +66,6 @@ function renderAdmin(data) {
 	})
 }
 
-// 4. Логіка ініціалізації (виконується при завантаженні сторінки)
 if (document.getElementById('admin-list')) {
 	if (role !== 'admin') {
 		alert('Доступ лише для адмінів!')
@@ -79,7 +75,6 @@ if (document.getElementById('admin-list')) {
 	}
 }
 
-// 5. Пошук
 document.getElementById('search')?.addEventListener('input', e => {
 	const term = e.target.value.toLowerCase()
 	const filtered = briefs.filter(b =>
@@ -101,7 +96,7 @@ async function updateStatus(id, newStatus) {
 		})
 
 		if (res.ok) {
-			loadAdminBriefs() // Оновлюємо список
+			loadAdminBriefs()
 		} else {
 			const errorData = await res.json().catch(() => ({}))
 			alert('Не вдалося оновити статус: ' + (errorData.error || res.statusText))

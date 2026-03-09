@@ -3,21 +3,18 @@ const role = localStorage.getItem('role')
 const urlParams = new URLSearchParams(window.location.search)
 const id = urlParams.get('id')
 
-// Елементи керування
 const adminControls = document.getElementById('admin-controls')
 const editBtn = document.getElementById('edit-btn')
 const saveBtn = document.getElementById('save-btn')
 const cancelBtn = document.getElementById('cancel-btn')
 const briefContainer = document.getElementById('brief')
 
-// 1. Ініціалізація кнопок (тільки для адміна)
 document.addEventListener('DOMContentLoaded', () => {
     if (role === 'admin' && adminControls) {
         adminControls.classList.remove('hidden')
     }
 })
 
-// 2. Мапа лейблів у ключі бази
 const labelToKey = {
     'Замовник': 'contactName',
     'Телефон': 'phone',
@@ -37,9 +34,8 @@ const labelToKey = {
     'Терміни': 'timeline'
 }
 
-let originalHTML = '' // Для скасування змін
+let originalHTML = ''
 
-// 3. Перехід в режим редагування
 editBtn?.addEventListener('click', () => {
     originalHTML = briefContainer.innerHTML
 
@@ -68,7 +64,6 @@ editBtn?.addEventListener('click', () => {
     cancelBtn.classList.remove('hidden')
 })
 
-// 4. Скасування змін
 cancelBtn?.addEventListener('click', () => {
     briefContainer.innerHTML = originalHTML
     editBtn.classList.remove('hidden')
@@ -76,7 +71,6 @@ cancelBtn?.addEventListener('click', () => {
     cancelBtn.classList.add('hidden')
 })
 
-// 5. Збереження змін
 saveBtn?.addEventListener('click', async () => {
     const inputs = briefContainer.querySelectorAll('.edit-input')
     const updatedData = {}
@@ -89,9 +83,8 @@ saveBtn?.addEventListener('click', async () => {
         if (!key) return
 
         let value = input.value.trim()
-        if (value === '') value = null // пусті поля не зберігаємо як "—"
+        if (value === '') value = null
 
-        // Масиви
         if (key === 'struct' || key === 'design') {
             updatedData[key] = value ? value.split(',').map(s => s.trim()) : []
         } else {
