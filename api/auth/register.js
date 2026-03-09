@@ -1,4 +1,4 @@
-import connectDB from '../../../server/db.js'
+import connectDB from '../../server/db.js'
 import bcrypt from 'bcryptjs'
 
 export default async function handler(req, res) {

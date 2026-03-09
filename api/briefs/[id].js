@@ -1,6 +1,6 @@
-import connectDB from '../../../server/db.js'
+import connectDB from '../../server/db.js'
 import { ObjectId } from 'mongodb'
-import auth from '../../../server/middleware/auth.js'
+import auth from '../../server/middleware/auth.js'
 
 export default async function handler(req, res) {
 	const { id } = req.query

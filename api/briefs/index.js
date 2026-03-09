@@ -1,5 +1,5 @@
-import connectDB from '../../../server/db.js'
-import auth from '../../../server/middleware/auth.js'
+import connectDB from '../../server/db.js'
+import auth from '../../server/middleware/auth.js'
 
 export default async function handler(req, res) {
 	const method = req.method
