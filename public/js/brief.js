@@ -44,7 +44,6 @@ const labelToKey = {
 	'Не подобається': 'dislikes',
 }
 
-// ------------------ Функція завантаження брифу ------------------
 async function loadBrief() {
 	if (!briefId) return
 
@@ -58,7 +57,6 @@ async function loadBrief() {
 			return
 		}
 
-		// Перевіряємо, щоб struct і design були масивами
 		if (!Array.isArray(data.struct)) data.struct = []
 		if (!Array.isArray(data.design)) data.design = []
 
@@ -83,27 +81,57 @@ async function loadBrief() {
                         <p><label>Місія:</label> ${data.projectEssence || '—'}</p>
                         <p><label>УТП:</label> ${data.usp || '—'}</p>
                         <p><label>Цінності:</label> ${data.values || '—'}</p>
+                        <p><label>Вигода:</label> ${data.valueBenefit || '—'}</p>
                     </div>
 
                     <div class="brief-section">
-                        <h3>03. Аудиторія</h3>
+                        <h3>03. Аудиторія та Ринок</h3>
                         <p><label>Ядро:</label> ${data.targetAudience1 || '—'}</p>
                         <p><label>Додаткові групи:</label> ${data.targetAudience2 || '—'}</p>
                         <p><label>Тип покупки:</label> ${data.purchaseType === 'Simple' ? 'Проста' : 'Складна'}</p>
+                        <p><label>Інновації:</label> ${
+													data.innovation === 'new'
+														? 'Інноваційний'
+														: data.innovation === 'improved'
+															? 'Покращений аналог'
+															: 'Стандартний'
+												}</p>
                     </div>
 
                     <div class="brief-section">
-                        <h3>04. Технічні деталі</h3>
-                        <p><label>Тип сайту:</label> ${data.siteType || '—'}</p>
+                        <h3>04. Конкуренти</h3>
+                        <p><label>Посилання:</label> <br>${(data.competitorLinks || '—').replace(/\n/g, '<br>')}</p>
+                        <p><label>Аналіз:</label> ${data.competitorAnalysis || '—'}</p>
                         <p><label>Гео:</label> ${data.geo || '—'}</p>
+                    </div>
+
+                    <div class="brief-section">
+                        <h3>05. Технічні деталі</h3>
+                        <p><label>Тип сайту:</label> ${data.siteType || '—'}</p>
+                        <p><label>Хостинг:</label> ${data.hostingNeeded || '—'}</p>
+                        <p><label>Домен:</label> ${data.domainNeeded || '—'}</p>
                         <p><label>Структура:</label> ${data.struct.join(', ') || 'Не вказано'}</p>
-                        <p><label>Дизайн:</label> ${data.design.join(', ') || 'Не вказано'}</p>
+                    </div>
+
+                    <div class="brief-section">
+                        <h3>06. Дизайн та Стиль</h3>
+                        <p><label>Стилістика:</label> ${data.design.join(', ') || 'Не вказано'}</p>
+                        <p><label>Подобається:</label> ${data.likes || '—'}</p>
+                        <p><label>Не подобається:</label> ${data.dislikes || '—'}</p>
                     </div>
                 </div>
 
-                <div class="brief-footer">
-                    <p><label>Бюджет:</label> ${data.budget || 'Обговорюється'}</p>
-                    <p><label>Терміни:</label> ${data.timeline || 'Не вказано'}</p>
+                <div class="brief-footer" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div class="brief-grid">
+                        <div class="brief-section">
+                             <p><label>Бюджет:</label> <strong>${data.budget || 'Обговорюється'}</strong></p>
+                             <p><label>Терміни:</label> <strong>${data.timeline || 'Не вказано'}</strong></p>
+                        </div>
+                        <div class="brief-section">
+                             <p><label>Рішення приймає:</label> ${data.decisionMaker || '—'}</p>
+                             <p><label>Додатково:</label> ${data.extraInfo || '—'}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         `
@@ -112,7 +140,6 @@ async function loadBrief() {
 	}
 }
 
-// ------------------ Логіка редагування ------------------
 function enableAdminControls() {
 	if (role !== 'admin' || !adminControls) return
 	adminControls.classList.remove('hidden')
